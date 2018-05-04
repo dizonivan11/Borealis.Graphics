@@ -8,7 +8,7 @@ namespace Borealis.Graphics
     public abstract class Scene
     {
         public string Name { get; set; }
-        
+
         public Scene(string name) {
             Name = name;
         }
