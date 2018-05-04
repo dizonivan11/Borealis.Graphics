@@ -42,11 +42,15 @@
   <ItemGroup>
     <Compile Include="EventArguments\ClickEventArgs.cs" />
     <Compile Include="GameForm.cs" />
+    <Compile Include="GameObjects\Button.cs" />
     <Compile Include="GameObjects\Doodad.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Window.cs" />
-    <Compile Include="Input\Buttons.cs" />
+    <Compile Include="Input\MouseButtons.cs" />
     <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Layers\Layer.cs" />
+    <Compile Include="Layers\ObjectLayer.cs" />
+    <Compile Include="Layers\WindowLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Styler.cs" />
