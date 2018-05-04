@@ -14,6 +14,7 @@ namespace Borealis.Graphics
                 Add("windowBase", Color.FromNonPremultiplied(100, 125, 200, 150));
                 Add("windowTitle", Color.FromNonPremultiplied(100, 125, 225, 200));
                 Add("windowTitleFore", Color.Black);
+                Add("windowBorder", Color.Black);
             }
         }
 
