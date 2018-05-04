@@ -1,6 +1,8 @@
 ﻿using Borealis.Graphics.GameObjects;
+using Borealis.Graphics.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Borealis.Graphics
 {
@@ -8,15 +10,17 @@ namespace Borealis.Graphics
     {
         public static Color DefaultColor = Color.White;
 
+        public InputManager Input { get; set; }
         private SpriteBatch spriteBatch { get; set; }
         public Scene CurrentScene { get; private set; }
-
+        
         public GameForm(int gameWidth, int gameHeight, Scene initialScene) {
             GameObject.Graphics = new GraphicsDeviceManager(this) {
                 PreferredBackBufferWidth = gameWidth,
                 PreferredBackBufferHeight = gameHeight,
                 SynchronizeWithVerticalRetrace = false
             };
+            Input = new InputManager();
             CurrentScene = initialScene;
         }
 
@@ -47,7 +51,9 @@ namespace Borealis.Graphics
         }
 
         protected override void Update(GameTime gameTime) {
-            CurrentScene?.Update(gameTime);
+            Input.Update(Mouse.GetState(), Keyboard.GetState());
+            CurrentScene?.Update(gameTime, Input);
+            Input.Apply();
             base.Update(gameTime);
         }
 
