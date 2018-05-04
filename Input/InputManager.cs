@@ -10,6 +10,7 @@ namespace Borealis.Graphics.Input
         public KeyboardState OldKey { get; set; }
         public KeyboardState NewKey { get; set; }
         public GameObject Selected { get; set; }
+        public GameObject PreviousSelected { get; set; }
 
         public InputManager() {
             NewMouse = new MouseState();
@@ -17,21 +18,22 @@ namespace Borealis.Graphics.Input
             NewKey = new KeyboardState();
             OldKey = NewKey;
             Selected = null;
+            PreviousSelected = Selected;
         }
 
-        public bool JustClicked(Buttons type) {
+        public bool JustClicked(MouseButtons type) {
             switch (type) {
-                case Buttons.Left: return NewMouse.LeftButton == ButtonState.Pressed && OldMouse.LeftButton == ButtonState.Released;
-                case Buttons.Middle: return NewMouse.MiddleButton == ButtonState.Pressed && OldMouse.MiddleButton == ButtonState.Released;
-                case Buttons.Right: return NewMouse.RightButton == ButtonState.Pressed && OldMouse.RightButton == ButtonState.Released;
+                case MouseButtons.Left: return NewMouse.LeftButton == ButtonState.Pressed && OldMouse.LeftButton == ButtonState.Released;
+                case MouseButtons.Middle: return NewMouse.MiddleButton == ButtonState.Pressed && OldMouse.MiddleButton == ButtonState.Released;
+                case MouseButtons.Right: return NewMouse.RightButton == ButtonState.Pressed && OldMouse.RightButton == ButtonState.Released;
                 default: return false;
             }
         }
-        public bool Clicked(Buttons type) {
+        public bool Clicked(MouseButtons type) {
             switch (type) {
-                case Buttons.Left: return NewMouse.LeftButton == ButtonState.Released && OldMouse.LeftButton == ButtonState.Pressed;
-                case Buttons.Middle: return NewMouse.MiddleButton == ButtonState.Released && OldMouse.MiddleButton == ButtonState.Pressed;
-                case Buttons.Right: return NewMouse.RightButton == ButtonState.Released && OldMouse.RightButton == ButtonState.Pressed;
+                case MouseButtons.Left: return NewMouse.LeftButton == ButtonState.Released && OldMouse.LeftButton == ButtonState.Pressed;
+                case MouseButtons.Middle: return NewMouse.MiddleButton == ButtonState.Released && OldMouse.MiddleButton == ButtonState.Pressed;
+                case MouseButtons.Right: return NewMouse.RightButton == ButtonState.Released && OldMouse.RightButton == ButtonState.Pressed;
                 default: return false;
             }
         }
@@ -47,18 +49,24 @@ namespace Borealis.Graphics.Input
         }
 
         internal void Apply() {
+            if (PreviousSelected != null && PreviousSelected != Selected) {
+                PreviousSelected.OnLeave(this);
+                PreviousSelected = null;
+            }
+
             if (Selected == null) return;
             Selected.OnHover(this);
 
-            if (JustClicked(Buttons.Left)) Selected.OnJustClick(this, Buttons.Left);
-            if (Clicked(Buttons.Left)) Selected.OnClick(this, Buttons.Left);
+            if (JustClicked(MouseButtons.Left)) Selected.OnJustClick(this, MouseButtons.Left);
+            if (Clicked(MouseButtons.Left)) Selected.OnClick(this, MouseButtons.Left);
 
-            if (JustClicked(Buttons.Middle)) Selected.OnJustClick(this, Buttons.Middle);
-            if (Clicked(Buttons.Middle)) Selected.OnClick(this, Buttons.Middle);
+            if (JustClicked(MouseButtons.Middle)) Selected.OnJustClick(this, MouseButtons.Middle);
+            if (Clicked(MouseButtons.Middle)) Selected.OnClick(this, MouseButtons.Middle);
 
-            if (JustClicked(Buttons.Right)) Selected.OnJustClick(this, Buttons.Right);
-            if (Clicked(Buttons.Right)) Selected.OnClick(this, Buttons.Right);
+            if (JustClicked(MouseButtons.Right)) Selected.OnJustClick(this, MouseButtons.Right);
+            if (Clicked(MouseButtons.Right)) Selected.OnClick(this, MouseButtons.Right);
 
+            PreviousSelected = Selected;
             Selected = null;
         }
     }

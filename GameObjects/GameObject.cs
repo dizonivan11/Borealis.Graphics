@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
+public delegate void InvalidateHandler();
 public delegate void UpdateEventHandler(GameTime gameTime, InputManager input);
 public delegate void GameEventHandler(Borealis.Graphics.GameObjects.GameObject sender, InputManager input);
 public delegate void ClickEventHandler(Borealis.Graphics.GameObjects.GameObject sender, ClickEventArgs e);
@@ -30,15 +31,17 @@ namespace Borealis.Graphics.GameObjects
 
         }
 
-        public Texture2D Face { get; private set; }
+        public Texture2D Face { get; set; }
         public GameObject Parent { get; private set; }
-        public List<GameObject> Objects { get; set; }
+        public List<GameObject> Objects { get; private set; }
         public Vector2 Position { get; set; }
         public bool Enabled { get; set; }
         public Styler Style { get; set; }
         public SpriteFont Font { get; set; }
         public bool InputRaycasted { get; set; }
-        
+        public bool PreviousSelected { get; set; }
+        private InvalidateHandler Invalidater;
+
         public Vector2 FinalPosition { get { if (Parent != null) return Parent.FinalPosition + Position; else return Position; } }
 
         // EVENTS
@@ -51,15 +54,18 @@ namespace Borealis.Graphics.GameObjects
         public event GameEventHandler Hover;
         internal virtual void OnHover(InputManager input) { Hover?.Invoke(this, input); }
 
+        public event GameEventHandler Leave;
+        internal virtual void OnLeave(InputManager input) { Leave?.Invoke(this, input); }
+
         public event ClickEventHandler JustClick;
-        internal virtual void OnJustClick(InputManager input, Buttons button) {
+        internal virtual void OnJustClick(InputManager input, MouseButtons button) {
             JustClick?.Invoke(this, new ClickEventArgs() {
                 Input = input,
                 Button = button
             });
         }
         public event ClickEventHandler Click;
-        internal virtual void OnClick(InputManager input, Buttons button) {
+        internal virtual void OnClick(InputManager input, MouseButtons button) {
             Click?.Invoke(this, new ClickEventArgs() {
                 Input = input,
                 Button = button
@@ -75,27 +81,46 @@ namespace Borealis.Graphics.GameObjects
             Enabled = true;
             Font = DefaultFont;
             InputRaycasted = true;
+            PreviousSelected = false;
             Face = Invalidate(width, height, args);
+            Invalidater = new InvalidateHandler(delegate () {
+                Face = Invalidate(width, height, args);
+            });
+        }
+
+        public void Add(GameObject item) {
+            item.Parent = this;
+            Objects.Add(item);
+        }
+
+        public void Remove(GameObject item) {
+            item.Parent = null;
+            Objects.Remove(item);
         }
 
         public abstract Texture2D Invalidate(int width, int height, params object[] args);
+        public void Invalidate() { Invalidater.Invoke(); }
 
         public void UpdateInput(InputManager input) {
             if (new Rectangle(FinalPosition.ToPoint(), new Point(Face.Width, Face.Height)).Contains(input.NewMouse.X, input.NewMouse.Y)) {
                 if (InputRaycasted) {
                     input.Selected = this;
                 } else {
+                    PreviousSelected = true;
                     OnHover(input);
 
-                    if (input.JustClicked(Buttons.Left)) OnJustClick(input, Buttons.Left);
-                    if (input.Clicked(Buttons.Left)) OnClick(input, Buttons.Left);
+                    if (input.JustClicked(MouseButtons.Left)) OnJustClick(input, MouseButtons.Left);
+                    if (input.Clicked(MouseButtons.Left)) OnClick(input, MouseButtons.Left);
 
-                    if (input.JustClicked(Buttons.Middle)) OnJustClick(input, Buttons.Middle);
-                    if (input.Clicked(Buttons.Middle)) OnClick(input, Buttons.Middle);
+                    if (input.JustClicked(MouseButtons.Middle)) OnJustClick(input, MouseButtons.Middle);
+                    if (input.Clicked(MouseButtons.Middle)) OnClick(input, MouseButtons.Middle);
 
-                    if (input.JustClicked(Buttons.Right)) OnJustClick(input, Buttons.Right);
-                    if (input.Clicked(Buttons.Right)) OnClick(input, Buttons.Right);
+                    if (input.JustClicked(MouseButtons.Right)) OnJustClick(input, MouseButtons.Right);
+                    if (input.Clicked(MouseButtons.Right)) OnClick(input, MouseButtons.Right);
                 }
+            } else if (PreviousSelected) {
+                PreviousSelected = false;
+                OnLeave(input);
             }
         }
 
@@ -107,10 +132,10 @@ namespace Borealis.Graphics.GameObjects
             for (int i = 0; i < Objects.Count; i++) Objects[i].Update(gameTime, input);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch) {
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             if (!Enabled || Face == null) return;
             spriteBatch.Draw(Face, FinalPosition, Color.White);
-            for (int i = 0; i < Objects.Count; i++) Objects[i].Draw(spriteBatch);
+            for (int i = 0; i < Objects.Count; i++) Objects[i].Draw(gameTime, spriteBatch);
         }
 
         public SpriteBatch Begin(RenderTarget2D val) {
