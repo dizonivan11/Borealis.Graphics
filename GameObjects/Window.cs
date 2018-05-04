@@ -16,10 +16,19 @@ namespace Borealis.Graphics.GameObjects
         private bool dragging = false;
         private Point dragPoint = Point.Zero;
 
+        internal Button close = null;
+
         public Window(int width, int height, string title, bool isClosable = true)
-            : base(width, height, title, isClosable) {
+            : base(width, height, title) {
             Title = title;
             Closable = isClosable;
+
+            int btnSize = 24;
+            if (Closable) {
+                close = new Button(btnSize, btnSize, "X");
+                close.Position += new Vector2(width - btnSize - TitlePadding, 0);
+                Add(close);
+            }
 
             InputUpdated += Window_InputUpdated;
             JustClick += TitleClick;
@@ -35,14 +44,15 @@ namespace Borealis.Graphics.GameObjects
         private void TitleClick(GameObject sender, ClickEventArgs e) {
             int titleHeight = (int)Font.MeasureString(Title).Y + (TitlePadding * 2);
             float clickedPoint = e.Input.NewMouse.Y - FinalPosition.Y;
-            if (clickedPoint > 0 && clickedPoint < titleHeight && e.Button == Input.Buttons.Left) {
+            if (clickedPoint > 0 && clickedPoint < titleHeight && e.Button == MouseButtons.Left) {
                 dragPoint = (e.Input.NewMouse.Position - FinalPosition.ToPoint());
                 dragging = true;
             }
         }
-        
+
         public override Texture2D Invalidate(int width, int height, params object[] args) {
-            int titleHeight = (int)Font.MeasureString(args[0].ToString()).Y + (TitlePadding * 2);
+            string title = args[0].ToString();
+            int titleHeight = (int)Font.MeasureString(title).Y + (TitlePadding * 2);
             RenderTarget2D val = new RenderTarget2D(Graphics.GraphicsDevice, width, height);
             SpriteBatch spriteBatch = Begin(val);
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, width, height), Style["windowBase"]); // b
@@ -52,7 +62,7 @@ namespace Borealis.Graphics.GameObjects
             spriteBatch.Draw(Pixel, new Rectangle(0, height - 1, width - 1, 1), Style["windowBorder"]); // v-
             spriteBatch.Draw(Pixel, new Rectangle(width - 1, 0, 1, height), Style["windowBorder"]); // >|
             spriteBatch.Draw(Pixel, new Rectangle(0, titleHeight - 1, width, 1), Style["windowBorder"]); // t-
-            spriteBatch.DrawString(Font, args[0].ToString(), new Vector2(TitlePadding, TitlePadding), Style["windowTitleFore"]); // t-text
+            spriteBatch.DrawString(Font, title, new Vector2(TitlePadding, TitlePadding), Style["windowFore"]); // t-text
             End(spriteBatch);
             return val;
         }
