@@ -13,7 +13,7 @@ namespace Borealis.Graphics
         public InputManager Input { get; set; }
         private SpriteBatch spriteBatch { get; set; }
         public Scene CurrentScene { get; private set; }
-        
+
         public GameForm(int gameWidth, int gameHeight, Scene initialScene) {
             GameObject.Graphics = new GraphicsDeviceManager(this) {
                 PreferredBackBufferWidth = gameWidth,
