@@ -9,7 +9,7 @@ namespace Borealis.Graphics
 
     public static class DrawModeExtension
     {
-        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, Color defaultColor, DrawMode mode) {
+        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, DrawMode mode) {
             switch (mode) {
                 case DrawMode.Normal:
                     spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, texture.Height), Color.White);
@@ -21,8 +21,8 @@ namespace Borealis.Graphics
                         for (int x = 0; x < rectangle.Width / texture.Width; x++) {
                             spriteBatch.Draw(
                                 texture, new Rectangle(
-                                    x * texture.Width,
-                                    y * texture.Height,
+                                    rectangle.X + (x * texture.Width),
+                                    rectangle.Y + (y * texture.Height),
                                     texture.Width,
                                     texture.Height),
                                 Color.White);
@@ -31,8 +31,8 @@ namespace Borealis.Graphics
                         int xLeft = rectangle.Width - (lastX * texture.Width);
                         spriteBatch.Draw(
                                 texture, new Rectangle(
-                                    lastX * texture.Width,
-                                    y * texture.Height,
+                                    rectangle.X + (lastX * texture.Width),
+                                    rectangle.Y + (y * texture.Height),
                                     xLeft,
                                     texture.Height),
                                 new Rectangle(
@@ -46,8 +46,8 @@ namespace Borealis.Graphics
                     for (int x = 0; x < rectangle.Width / texture.Width; x++) {
                         spriteBatch.Draw(
                             texture, new Rectangle(
-                                x * texture.Width,
-                                lastY * texture.Height,
+                                rectangle.X + (x * texture.Width),
+                                rectangle.Y + (lastY * texture.Height),
                                 texture.Width,
                                 yLeftLast),
                             new Rectangle(
@@ -60,8 +60,8 @@ namespace Borealis.Graphics
                     int xLeftLast = rectangle.Width - (lastX * texture.Width);
                     spriteBatch.Draw(
                             texture, new Rectangle(
-                                lastX * texture.Width,
-                                lastY * texture.Height,
+                                rectangle.X + (lastX * texture.Width),
+                                rectangle.Y + (lastY * texture.Height),
                                 xLeftLast,
                                 yLeftLast),
                             new Rectangle(
@@ -78,9 +78,6 @@ namespace Borealis.Graphics
                     break;
                 case DrawMode.StretchedY:
                     spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, rectangle.Height), Color.White);
-                    break;
-                default:
-                    spriteBatch.Draw(GameObject.Pixel, new Rectangle(0, 0, rectangle.Width, rectangle.Height), defaultColor);
                     break;
             }
         }
