@@ -17,10 +17,12 @@ namespace Borealis.Graphics.GameObjects
         public static GraphicsDeviceManager Graphics;
         public static Texture2D Pixel;
         public static SpriteFont DefaultFont;
+        public static Styler DefaultStyle;
 
         public static void Inititalize(Game game) {
             Pixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
+            DefaultStyle = new Styler();
         }
 
         public static void LoadContent(ContentManager content) {
@@ -74,7 +76,7 @@ namespace Borealis.Graphics.GameObjects
         // CONSTRUCTOR
         public GameObject(int width, int height) {
             Face = new RenderTarget2D(Graphics.GraphicsDevice, width, height);
-            Style = new Styler();
+            Style = DefaultStyle;
             Parent = null;
             Objects = new List<GameObject>();
             Position = Vector2.Zero;
