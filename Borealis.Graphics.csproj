@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrawMode.cs" />
     <Compile Include="EventArguments\ClickEventArgs.cs" />
     <Compile Include="GameForm.cs" />
     <Compile Include="GameObjects\Button.cs" />
