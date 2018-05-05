@@ -10,12 +10,15 @@ namespace Borealis.Graphics.GameObjects
     {
         public static int TitlePadding = 8;
         public static Texture2D DefaultTitleBackground = null;
+        public static Texture2D DefaultBackground = null;
 
         public int TitleHeight { get { return (int)Font.MeasureString(Title).Y + (TitlePadding * 2); } }
 
         public string Title { get; set; }
         public Texture2D TitleBackground { get; set; }
         public DrawMode TitleBackgroundMode { get; set; }
+        public Texture2D Background { get; set; }
+        public DrawMode BackgroundMode { get; set; }
         public bool Closable { get; set; }
 
         private bool dragging = false;
@@ -28,6 +31,8 @@ namespace Borealis.Graphics.GameObjects
             Title = title;
             TitleBackground = DefaultTitleBackground;
             TitleBackgroundMode = DrawMode.Repeat;
+            Background = DefaultBackground;
+            BackgroundMode = DrawMode.Repeat;
             Closable = isClosable;
 
             int btnSize = 24;
@@ -60,11 +65,14 @@ namespace Borealis.Graphics.GameObjects
         public override void Invalidate() {
             int titleHeight = (int)Font.MeasureString(Title).Y + (TitlePadding * 2);
             SpriteBatch spriteBatch = Begin(Face);
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, Face.Height), Style["windowBase"]); // b
 
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, titleHeight), Style["windowTitle"]); // t
-            if (TitleBackground != null)
-                spriteBatch.Draw(TitleBackground, new Rectangle(0, 0, Face.Width, titleHeight), Style["windowTitle"], TitleBackgroundMode);
+            Rectangle bounds = new Rectangle(0, TitleHeight, Face.Width, Face.Height - TitleHeight);
+            spriteBatch.Draw(Pixel, bounds, Style["windowBase"]); // b
+            if (Background != null) spriteBatch.Draw(Background, bounds, BackgroundMode);
+
+            Rectangle titleBounds = new Rectangle(0, 0, Face.Width, titleHeight);
+            spriteBatch.Draw(Pixel, titleBounds, Style["windowTitle"]); // t
+            if (TitleBackground != null) spriteBatch.Draw(TitleBackground, titleBounds, TitleBackgroundMode);
 
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style["windowBorder"]); // ^-
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style["windowBorder"]); // <|
