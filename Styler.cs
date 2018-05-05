@@ -11,14 +11,14 @@ namespace Borealis.Graphics
                 // Add Styles Here From File....
             } else {
                 // Load Default Values
-                Add("windowBase", Color.FromNonPremultiplied(100, 125, 200, 225));
+                Add("windowBase", Color.FromNonPremultiplied(229, 229, 229, 215));
                 Add("windowFore", Color.Black);
                 Add("windowBorder", Color.Black);
-                Add("windowTitle", Color.FromNonPremultiplied(100, 125, 225, 225));
+                Add("windowTitle", Color.White);
 
-                Add("buttonBase", Color.FromNonPremultiplied(100, 125, 200, 225));
-                Add("buttonBaseHover", Color.FromNonPremultiplied(125, 150, 225, 225));
-                Add("buttonBaseActive", Color.FromNonPremultiplied(150, 175, 255, 225));
+                Add("buttonBase", Color.FromNonPremultiplied(229, 229, 229, 215));
+                Add("buttonBaseHover", Color.FromNonPremultiplied(239, 239, 239, 215));
+                Add("buttonBaseActive", Color.FromNonPremultiplied(249, 249, 249, 215));
                 Add("buttonFore", Color.Black);
                 Add("buttonBorder", Color.Black);
             }
