@@ -11,12 +11,13 @@ namespace Borealis.Graphics.GameObjects
 
         private Color currentColor;
 
-        public Button(int width, int height, string text) : base(width, height, text) {
+        public Button(string text, int width = 1, int height = 1) : base(width, height) {
             Text = text;
             Padding = 8;
 
             currentColor = Style["buttonBase"];
             Invalidate();
+
             Hover += Button_Hover;
             Leave += Button_Leave;
         }
@@ -39,22 +40,19 @@ namespace Borealis.Graphics.GameObjects
             }
         }
 
-        public override Texture2D Invalidate(int width, int height, params object[] args) {
-            string text = args[0].ToString();
-            Vector2 textSize = Font.MeasureString(text);
-            if (width < 0) width = (int)textSize.X + (Padding * 2);
-            if (height < 0) height = (int)textSize.Y + (Padding * 2);
-            RenderTarget2D val = new RenderTarget2D(Graphics.GraphicsDevice, width, height);
-            SpriteBatch spriteBatch = Begin(val);
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, width, height), currentColor); // b
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, width - 1, 1), Style["buttonBorder"]); // ^-
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, height - 1), Style["buttonBorder"]); // <|
-            spriteBatch.Draw(Pixel, new Rectangle(0, height - 1, width - 1, 1), Style["buttonBorder"]); // v-
-            spriteBatch.Draw(Pixel, new Rectangle(width - 1, 0, 1, height), Style["buttonBorder"]); // >|
+        public override void Invalidate() {
+            Vector2 textSize = Font.MeasureString(Text);
+            if (Face.Width == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, (int)textSize.X + (Padding * 2), Face.Height);
+            if (Face.Height == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, Face.Width, (int)textSize.Y + (Padding * 2));
+            SpriteBatch spriteBatch = Begin(Face);
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, Face.Height), currentColor); // b
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style["buttonBorder"]); // ^-
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style["buttonBorder"]); // <|
+            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style["buttonBorder"]); // v-
+            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style["buttonBorder"]); // >|
             spriteBatch.DrawString(
-                Font, text, new Vector2((width / 2) - (textSize.X / 2), (height / 2) - (textSize.Y / 2)), Style["buttonFore"]); // t
+                Font, Text, new Vector2((Face.Width / 2) - (textSize.X / 2), (Face.Height / 2) - (textSize.Y / 2)), Style["buttonFore"]); // t
             End(spriteBatch);
-            return val;
         }
     }
 }

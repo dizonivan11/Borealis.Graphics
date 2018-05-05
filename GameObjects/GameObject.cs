@@ -31,7 +31,7 @@ namespace Borealis.Graphics.GameObjects
 
         }
 
-        public Texture2D Face { get; set; }
+        public RenderTarget2D Face { get; set; }
         public GameObject Parent { get; private set; }
         public List<GameObject> Objects { get; private set; }
         public Vector2 Position { get; set; }
@@ -40,7 +40,6 @@ namespace Borealis.Graphics.GameObjects
         public SpriteFont Font { get; set; }
         public bool InputRaycasted { get; set; }
         public bool PreviousSelected { get; set; }
-        private InvalidateHandler Invalidater;
 
         public Vector2 FinalPosition { get { if (Parent != null) return Parent.FinalPosition + Position; else return Position; } }
 
@@ -73,7 +72,8 @@ namespace Borealis.Graphics.GameObjects
         }
 
         // CONSTRUCTOR
-        public GameObject(int width, int height, params object[] args) {
+        public GameObject(int width, int height) {
+            Face = new RenderTarget2D(Graphics.GraphicsDevice, width, height);
             Style = new Styler();
             Parent = null;
             Objects = new List<GameObject>();
@@ -82,10 +82,6 @@ namespace Borealis.Graphics.GameObjects
             Font = DefaultFont;
             InputRaycasted = true;
             PreviousSelected = false;
-            Face = Invalidate(width, height, args);
-            Invalidater = new InvalidateHandler(delegate () {
-                Face = Invalidate(width, height, args);
-            });
         }
 
         public void Add(GameObject item) {
@@ -97,9 +93,8 @@ namespace Borealis.Graphics.GameObjects
             item.Parent = null;
             Objects.Remove(item);
         }
-
-        public abstract Texture2D Invalidate(int width, int height, params object[] args);
-        public void Invalidate() { Invalidater.Invoke(); }
+        
+        public abstract void Invalidate();
 
         public void UpdateInput(InputManager input) {
             if (new Rectangle(FinalPosition.ToPoint(), new Point(Face.Width, Face.Height)).Contains(input.NewMouse.X, input.NewMouse.Y)) {

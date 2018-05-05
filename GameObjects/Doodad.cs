@@ -5,17 +5,18 @@ namespace Borealis.Graphics.GameObjects
 {
     public class Doodad : GameObject
     {
-        public Doodad(Texture2D surface)
-            : base(surface.Width, surface.Height, surface) {
+        public Texture2D Surface { get; set; }
 
+        public Doodad(Texture2D surface)
+            : base(surface.Width, surface.Height) {
+            Surface = surface;
+            Invalidate();
         }
 
-        public override Texture2D Invalidate(int width, int height, params object[] args) {
-            RenderTarget2D val = new RenderTarget2D(Graphics.GraphicsDevice, width, height);
-            SpriteBatch spriteBatch = Begin(val);
-            spriteBatch.Draw((Texture2D)args[0], new Rectangle(0, 0, width, height), Color.White);
+        public override void Invalidate() {
+            SpriteBatch spriteBatch = Begin(Face);
+            spriteBatch.Draw(Surface, new Rectangle(0, 0, Face.Width, Face.Height), Color.White);
             End(spriteBatch);
-            return val;
         }
     }
 }
