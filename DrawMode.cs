@@ -5,7 +5,7 @@ using System;
 
 namespace Borealis.Graphics
 {
-    public enum DrawMode { Normal, Repeat, Stretched, StretchedX, StretchedY }
+    public enum DrawMode { Stretched, Normal, Repeat, StretchedX, StretchedY }
 
     public static class DrawModeExtension
     {
