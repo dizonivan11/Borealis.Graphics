@@ -9,8 +9,6 @@ namespace Borealis.Graphics.GameObjects
     public class Window : GameObject
     {
         public static int TitlePadding = 8;
-        public static Texture2D DefaultTitleBackground = null;
-        public static Texture2D DefaultBackground = null;
 
         public int TitleHeight { get { return (int)Font.MeasureString(Title).Y + (TitlePadding * 2); } }
 
@@ -29,10 +27,8 @@ namespace Borealis.Graphics.GameObjects
         public Window(int width, int height, string title, bool isClosable = true)
             : base(width, height) {
             Title = title;
-            TitleBackground = DefaultTitleBackground;
-            TitleBackgroundMode = DrawMode.Repeat;
-            Background = DefaultBackground;
-            BackgroundMode = DrawMode.Repeat;
+            TitleBackground = Style.Textures["windowTitleBackground"];
+            Background = Style.Textures["windowBackground"];
             Closable = isClosable;
 
             int btnSize = 24;
@@ -67,19 +63,19 @@ namespace Borealis.Graphics.GameObjects
             SpriteBatch spriteBatch = Begin(Face);
 
             Rectangle bounds = new Rectangle(0, TitleHeight, Face.Width, Face.Height - TitleHeight);
-            spriteBatch.Draw(Pixel, bounds, Style["windowBase"]); // b
+            spriteBatch.Draw(Pixel, bounds, Style.Colors["windowBase"]); // b
             if (Background != null) spriteBatch.Draw(Background, bounds, BackgroundMode);
 
             Rectangle titleBounds = new Rectangle(0, 0, Face.Width, titleHeight);
-            spriteBatch.Draw(Pixel, titleBounds, Style["windowTitle"]); // t
+            spriteBatch.Draw(Pixel, titleBounds, Style.Colors["windowTitle"]); // t
             if (TitleBackground != null) spriteBatch.Draw(TitleBackground, titleBounds, TitleBackgroundMode);
 
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style["windowBorder"]); // ^-
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style["windowBorder"]); // <|
-            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style["windowBorder"]); // v-
-            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style["windowBorder"]); // >|
-            spriteBatch.Draw(Pixel, new Rectangle(0, titleHeight - 1, Face.Width, 1), Style["windowBorder"]); // t-
-            spriteBatch.DrawString(Font, Title, new Vector2(TitlePadding, TitlePadding), Style["windowFore"]); // t-text
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style.Colors["windowBorder"]); // ^-
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style.Colors["windowBorder"]); // <|
+            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style.Colors["windowBorder"]); // v-
+            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style.Colors["windowBorder"]); // >|
+            spriteBatch.Draw(Pixel, new Rectangle(0, titleHeight - 1, Face.Width, 1), Style.Colors["windowBorder"]); // t-
+            spriteBatch.DrawString(Font, Title, new Vector2(TitlePadding, TitlePadding), Style.Colors["windowFore"]); // t-text
             End(spriteBatch);
         }
     }

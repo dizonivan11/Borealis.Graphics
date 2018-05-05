@@ -15,7 +15,7 @@ namespace Borealis.Graphics.GameObjects
             Text = text;
             Padding = 8;
 
-            currentColor = Style["buttonBase"];
+            currentColor = Style.Colors["buttonBase"];
             Invalidate();
 
             Hover += Button_Hover;
@@ -23,19 +23,19 @@ namespace Borealis.Graphics.GameObjects
         }
         
         private void Button_Leave(GameObject sender, Input.InputManager input) {
-            if (currentColor == Style["buttonBase"]) return;
-            currentColor = Style["buttonBase"];
+            if (currentColor == Style.Colors["buttonBase"]) return;
+            currentColor = Style.Colors["buttonBase"];
             Invalidate();
         }
 
         private void Button_Hover(GameObject sender, Input.InputManager input) {
             if (input.NewMouse.LeftButton == ButtonState.Pressed) {
-                if (currentColor == Style["buttonBaseActive"]) return;
-                currentColor = Style["buttonBaseActive"];
+                if (currentColor == Style.Colors["buttonBaseActive"]) return;
+                currentColor = Style.Colors["buttonBaseActive"];
                 Invalidate();
             } else {
-                if (currentColor == Style["buttonBaseHover"]) return;
-                currentColor = Style["buttonBaseHover"];
+                if (currentColor == Style.Colors["buttonBaseHover"]) return;
+                currentColor = Style.Colors["buttonBaseHover"];
                 Invalidate();
             }
         }
@@ -46,12 +46,12 @@ namespace Borealis.Graphics.GameObjects
             if (Face.Height == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, Face.Width, (int)textSize.Y + (Padding * 2));
             SpriteBatch spriteBatch = Begin(Face);
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, Face.Height), currentColor); // b
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style["buttonBorder"]); // ^-
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style["buttonBorder"]); // <|
-            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style["buttonBorder"]); // v-
-            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style["buttonBorder"]); // >|
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style.Colors["buttonBorder"]); // ^-
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style.Colors["buttonBorder"]); // <|
+            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style.Colors["buttonBorder"]); // v-
+            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style.Colors["buttonBorder"]); // >|
             spriteBatch.DrawString(
-                Font, Text, new Vector2((Face.Width / 2) - (textSize.X / 2), (Face.Height / 2) - (textSize.Y / 2)), Style["buttonFore"]); // t
+                Font, Text, new Vector2((Face.Width / 2) - (textSize.X / 2), (Face.Height / 2) - (textSize.Y / 2)), Style.Colors["buttonFore"]); // t
             End(spriteBatch);
         }
     }
