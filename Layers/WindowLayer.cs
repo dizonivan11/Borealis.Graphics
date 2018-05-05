@@ -10,7 +10,7 @@ namespace Borealis.Graphics.Layers
     {
         public override void Add(Window item) {
             item.JustClick += Shift;
-            item.close.Click += Close_Click;
+            if (item.Closable) item.close.Click += Close_Click;
             Items.Add(item);
         }
 
@@ -29,7 +29,7 @@ namespace Borealis.Graphics.Layers
 
         public override void Remove(Window item) {
             item.JustClick -= Shift;
-            item.close.Click -= Close_Click;
+            if (item.Closable) item.close.Click -= Close_Click;
             Items.Remove(item);
         }
 
