@@ -17,7 +17,7 @@ namespace Borealis.Graphics.GameObjects
         public Texture2D TitleBackground { get; set; }
         public DrawMode TitleBackgroundMode { get; set; }
         public bool Closable { get; set; }
-        
+
         private bool dragging = false;
         private Point dragPoint = Point.Zero;
 
@@ -65,7 +65,7 @@ namespace Borealis.Graphics.GameObjects
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, titleHeight), Style["windowTitle"]); // t
             if (TitleBackground != null)
                 spriteBatch.Draw(TitleBackground, new Rectangle(0, 0, Face.Width, titleHeight), Style["windowTitle"], TitleBackgroundMode);
-            
+
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style["windowBorder"]); // ^-
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style["windowBorder"]); // <|
             spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style["windowBorder"]); // v-
