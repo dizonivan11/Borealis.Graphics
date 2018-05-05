@@ -9,8 +9,17 @@ namespace Borealis.Graphics.Layers
     public class WindowLayer : Layer<Window>
     {
         public override void Add(Window item) {
+            item.JustClick += Shift;
             item.close.Click += Close_Click;
             Items.Add(item);
+        }
+
+        private void Shift(GameObject sender, ClickEventArgs e) {
+            Window wnd = (Window)sender;
+            if (Items.IndexOf(wnd) < Items.Count - 1) {
+                Items.Remove(wnd);
+                Items.Add(wnd);
+            }
         }
 
         private void Close_Click(GameObject sender, ClickEventArgs e) {
@@ -19,6 +28,7 @@ namespace Borealis.Graphics.Layers
         }
 
         public override void Remove(Window item) {
+            item.JustClick -= Shift;
             item.close.Click -= Close_Click;
             Items.Remove(item);
         }
