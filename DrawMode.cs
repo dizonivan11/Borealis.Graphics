@@ -9,10 +9,10 @@ namespace Borealis.Graphics
 
     public static class DrawModeExtension
     {
-        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, DrawMode mode) {
+        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, DrawMode mode, Color color) {
             switch (mode) {
                 case DrawMode.Normal:
-                    spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, texture.Height), Color.White);
+                    spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, texture.Height), color);
                     break;
                 case DrawMode.Repeat:
                     int lastX = 0;
@@ -25,8 +25,8 @@ namespace Borealis.Graphics
                                     rectangle.Y + (y * texture.Height),
                                     texture.Width,
                                     texture.Height),
-                                Color.White);
-                            lastX = x+1;
+                                color);
+                            lastX = x + 1;
                         }
                         int xLeft = rectangle.Width - (lastX * texture.Width);
                         spriteBatch.Draw(
@@ -39,8 +39,8 @@ namespace Borealis.Graphics
                                     0, 0,
                                     xLeft,
                                     texture.Height),
-                                Color.White);
-                        lastY = y+1;
+                                color);
+                        lastY = y + 1;
                     }
                     int yLeftLast = rectangle.Height - (lastY * texture.Height);
                     for (int x = 0; x < rectangle.Width / texture.Width; x++) {
@@ -54,7 +54,7 @@ namespace Borealis.Graphics
                                 0, 0,
                                 texture.Width,
                                 yLeftLast),
-                            Color.White);
+                            color);
                         lastX = x + 1;
                     }
                     int xLeftLast = rectangle.Width - (lastX * texture.Width);
@@ -68,18 +68,22 @@ namespace Borealis.Graphics
                                 0, 0,
                                 xLeftLast,
                                 yLeftLast),
-                            Color.White);
+                            color);
                     break;
                 case DrawMode.Stretched:
-                    spriteBatch.Draw(texture, rectangle, Color.White);
+                    spriteBatch.Draw(texture, rectangle, color);
                     break;
                 case DrawMode.StretchedX:
-                    spriteBatch.Draw(texture, new Rectangle(0, 0, rectangle.Width, texture.Height), Color.White);
+                    spriteBatch.Draw(texture, new Rectangle(0, 0, rectangle.Width, texture.Height), color);
                     break;
                 case DrawMode.StretchedY:
-                    spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, rectangle.Height), Color.White);
+                    spriteBatch.Draw(texture, new Rectangle(0, 0, texture.Width, rectangle.Height), color);
                     break;
             }
+        }
+
+        public static void Draw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle rectangle, DrawMode mode) {
+            Draw(spriteBatch, texture, rectangle, mode, Color.White);
         }
     }
 }
