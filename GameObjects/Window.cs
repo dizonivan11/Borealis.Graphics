@@ -62,13 +62,17 @@ namespace Borealis.Graphics.GameObjects
             int titleHeight = (int)Font.MeasureString(Title).Y + (TitlePadding * 2);
             SpriteBatch spriteBatch = Begin(Face);
 
-            Rectangle bounds = new Rectangle(0, TitleHeight, Face.Width, Face.Height - TitleHeight);
-            spriteBatch.Draw(Pixel, bounds, Style.Colors["windowBase"]); // b
-            if (Background != null) spriteBatch.Draw(Background, bounds, BackgroundMode);
+            spriteBatch.Draw(
+                Background,
+                new Rectangle(0, TitleHeight, Face.Width, Face.Height - TitleHeight),
+                BackgroundMode,
+                Style.Colors["windowBase"]);
 
-            Rectangle titleBounds = new Rectangle(0, 0, Face.Width, titleHeight);
-            spriteBatch.Draw(Pixel, titleBounds, Style.Colors["windowTitle"]); // t
-            if (TitleBackground != null) spriteBatch.Draw(TitleBackground, titleBounds, TitleBackgroundMode);
+            spriteBatch.Draw(
+                TitleBackground,
+                new Rectangle(0, 0, Face.Width, titleHeight),
+                TitleBackgroundMode,
+                Style.Colors["windowTitle"]);
 
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style.Colors["windowBorder"]); // ^-
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style.Colors["windowBorder"]); // <|

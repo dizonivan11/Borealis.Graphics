@@ -8,12 +8,15 @@ namespace Borealis.Graphics.GameObjects
     {
         public string Text { get; set; }
         public int Padding { get; set; }
+        public Texture2D Background { get; set; }
+        public DrawMode BackgroundMode { get; set; }
 
         private Color currentColor;
 
         public Button(string text, int width = 1, int height = 1) : base(width, height) {
             Text = text;
             Padding = 8;
+            Background = Style.Textures["buttonBackground"];
 
             currentColor = Style.Colors["buttonBase"];
             Invalidate();
@@ -21,7 +24,7 @@ namespace Borealis.Graphics.GameObjects
             Hover += Button_Hover;
             Leave += Button_Leave;
         }
-        
+
         private void Button_Leave(GameObject sender, Input.InputManager input) {
             if (currentColor == Style.Colors["buttonBase"]) return;
             currentColor = Style.Colors["buttonBase"];
@@ -45,7 +48,13 @@ namespace Borealis.Graphics.GameObjects
             if (Face.Width == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, (int)textSize.X + (Padding * 2), Face.Height);
             if (Face.Height == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, Face.Width, (int)textSize.Y + (Padding * 2));
             SpriteBatch spriteBatch = Begin(Face);
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width, Face.Height), currentColor); // b
+
+            spriteBatch.Draw(
+                Background,
+                new Rectangle(0, 0, Face.Width, Face.Height),
+                BackgroundMode,
+                currentColor); // b
+
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style.Colors["buttonBorder"]); // ^-
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style.Colors["buttonBorder"]); // <|
             spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style.Colors["buttonBorder"]); // v-
