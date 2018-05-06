@@ -30,14 +30,16 @@ namespace Borealis.Graphics
                 root.AppendChild(CreateColor(doc, "windowBorder", Color.Black));
                 root.AppendChild(CreateColor(doc, "windowTitle", Color.White));
 
-                root.AppendChild(CreateColor(doc, "buttonBase", Color.FromNonPremultiplied(229, 229, 229, 215)));
-                root.AppendChild(CreateColor(doc, "buttonBaseHover", Color.FromNonPremultiplied(239, 239, 239, 215)));
-                root.AppendChild(CreateColor(doc, "buttonBaseActive", Color.FromNonPremultiplied(249, 249, 249, 215)));
+                root.AppendChild(CreateColor(doc, "buttonBase", Color.FromNonPremultiplied(235, 235, 235, 215)));
+                root.AppendChild(CreateColor(doc, "buttonBaseHover", Color.FromNonPremultiplied(245, 245, 245, 215)));
+                root.AppendChild(CreateColor(doc, "buttonBaseActive", Color.FromNonPremultiplied(255, 255, 255, 215)));
                 root.AppendChild(CreateColor(doc, "buttonFore", Color.Black));
                 root.AppendChild(CreateColor(doc, "buttonBorder", Color.Black));
 
                 root.AppendChild(LinkTexture(doc, "windowBackground", @".\graphics\windowBackground.png"));
                 root.AppendChild(LinkTexture(doc, "windowTitleBackground", @".\graphics\windowTitleBackground.png"));
+
+                root.AppendChild(LinkTexture(doc, "buttonBackground", @".\graphics\buttonBackground.png"));
 
                 doc.AppendChild(root);
                 doc.Save(DEFAULT_XML_PATH);
