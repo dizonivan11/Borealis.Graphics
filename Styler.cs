@@ -31,8 +31,8 @@ namespace Borealis.Graphics
                 root.AppendChild(CreateColor(doc, "windowTitle", Color.White));
 
                 root.AppendChild(CreateColor(doc, "buttonBase", Color.FromNonPremultiplied(235, 235, 235, 215)));
-                root.AppendChild(CreateColor(doc, "buttonBaseHover", Color.FromNonPremultiplied(245, 245, 245, 215)));
-                root.AppendChild(CreateColor(doc, "buttonBaseActive", Color.FromNonPremultiplied(255, 255, 255, 215)));
+                root.AppendChild(CreateColor(doc, "buttonBaseHover", Color.FromNonPremultiplied(245, 245, 245, 225)));
+                root.AppendChild(CreateColor(doc, "buttonBaseActive", Color.FromNonPremultiplied(255, 255, 255, 235)));
                 root.AppendChild(CreateColor(doc, "buttonFore", Color.Black));
                 root.AppendChild(CreateColor(doc, "buttonBorder", Color.Black));
 
@@ -66,7 +66,7 @@ namespace Borealis.Graphics
                         Textures.Add(textures[i].Attributes["name"].Value, Texture2D.FromStream(GameObject.Graphics.GraphicsDevice, file));
                         file.Close();
                     }
-                } catch { try { Textures.Add(textures[i].Attributes["name"].Value, null); } catch { continue; } }
+                } catch { try { Textures.Add(textures[i].Attributes["name"].Value, GameObject.Pixel); } catch { continue; } }
             }
         }
 
