@@ -64,7 +64,7 @@ namespace Borealis.Graphics
                         Textures.Add(textures[i].Attributes["name"].Value, Texture2D.FromStream(GameObject.Graphics.GraphicsDevice, file));
                         file.Close();
                     }
-                } catch { try { Textures.Add(textures[i].Attributes["name"].Value, GameObject.Pixel); } catch { continue; } }
+                } catch { try { Textures.Add(textures[i].Attributes["name"].Value, null); } catch { continue; } }
             }
         }
 
