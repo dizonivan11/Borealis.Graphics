@@ -71,10 +71,8 @@ namespace Borealis.Graphics
             XmlNodeList textures = ldoc.GetElementsByTagName("texture");
             for (int i = 0; i < textures.Count; i++) {
                 try {
-                    using (FileStream file = new FileStream(textures[i].InnerText, FileMode.Open, FileAccess.Read)) {
-                        Textures.Add(textures[i].Attributes["name"].Value, Texture2D.FromStream(GameObject.Graphics.GraphicsDevice, file));
-                        file.Close();
-                    }
+                    Texture2D value = Importer.FromFile(textures[i].InnerText);
+                    Textures.Add(textures[i].Attributes["name"].Value, value);
                 } catch { try { Textures.Add(textures[i].Attributes["name"].Value, GameObject.Pixel); } catch { continue; } }
             }
         }
