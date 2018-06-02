@@ -12,28 +12,29 @@ namespace Borealis.Graphics.GameObjects {
 
         private Color currentColor;
 
-        public Textbox(string text, int width = 1, int height = 1) : base(width, height) {
-            Text = text;
+        public Textbox(int width) : base(width, DefaultFont.LineSpacing + 16) {
+            Text = string.Empty;
             Padding = 8;
             Background = Style.Textures["textboxBackground"];
 
             currentColor = Style.Colors["textboxBase"];
             Invalidate();
 
-            Hover += Button_Hover;
-            Leave += Button_Leave;
+            Hover += Textbox_Hover;
+            Leave += Textbox_Leave;
         }
 
-        private void Button_Leave(GameObject sender, Input.InputManager input) {
+        private void Textbox_Leave(GameObject sender, InputManager input) {
+            if (Focused(input)) return;
             if (currentColor == Style.Colors["textboxBase"]) return;
             currentColor = Style.Colors["textboxBase"];
             Invalidate();
         }
 
-        private void Button_Hover(GameObject sender, Input.InputManager input) {
+        private void Textbox_Hover(GameObject sender, InputManager input) {
+            if (Focused(input)) return;
             if (input.NewMouse.LeftButton == ButtonState.Pressed) {
                 if (currentColor == Style.Colors["textboxBaseActive"]) return;
-                Focused = true;
                 currentColor = Style.Colors["textboxBaseActive"];
                 Invalidate();
             } else {
@@ -45,29 +46,25 @@ namespace Borealis.Graphics.GameObjects {
 
         public override void Invalidate() {
             Vector2 textSize = Font.MeasureString(Text);
-            if (Face.Width == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, (int)textSize.X + (Padding * 2), Face.Height);
-            if (Face.Height == 1) Face = new RenderTarget2D(Graphics.GraphicsDevice, Face.Width, (int)textSize.Y + (Padding * 2));
             SpriteBatch spriteBatch = Begin(Face);
 
             spriteBatch.Draw(
                 Background,
-                new Rectangle(0, 0, Face.Width, Face.Height),
+                new Rectangle(0, 0, Width, Height),
                 BackgroundMode,
                 currentColor); // b
-
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Face.Width - 1, 1), Style.Colors["textboxBorder"]); // ^-
-            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Face.Height - 1), Style.Colors["textboxBorder"]); // <|
-            spriteBatch.Draw(Pixel, new Rectangle(0, Face.Height - 1, Face.Width - 1, 1), Style.Colors["textboxBorder"]); // v-
-            spriteBatch.Draw(Pixel, new Rectangle(Face.Width - 1, 0, 1, Face.Height), Style.Colors["textboxBorder"]); // >|
             spriteBatch.DrawString(
-                Font, Text, new Vector2((Face.Width / 2) - (textSize.X / 2), (Face.Height / 2) - (textSize.Y / 2)), Style.Colors["textboxFore"]); // t
+                Font, Text, new Vector2(Padding, (Height / 2) - (textSize.Y / 2)), Style.Colors["textboxFore"]); // t
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, Width - 1, 1), Style.Colors["textboxBorder"]); // ^-
+            spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Height - 1), Style.Colors["textboxBorder"]); // <|
+            spriteBatch.Draw(Pixel, new Rectangle(0, Height - 1, Width - 1, 1), Style.Colors["textboxBorder"]); // v-
+            spriteBatch.Draw(Pixel, new Rectangle(Width - 1, 0, 1, Height), Style.Colors["textboxBorder"]); // >|
+
             End(spriteBatch);
         }
 
         internal override void OnInputUpdated(GameTime gameTime, InputManager input) {
-            if (Focused) {
-
-            }
+            if (Focused(input)) input.ProcessText(this);
         }
     }
 }
