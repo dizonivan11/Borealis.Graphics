@@ -46,6 +46,7 @@ namespace Borealis.Graphics
                 root.AppendChild(LinkTexture(doc, "windowTitleBackground", @".\graphics\windowTitleBackground.png"));
 
                 root.AppendChild(LinkTexture(doc, "buttonBackground", @".\graphics\buttonBackground.png"));
+                root.AppendChild(LinkTexture(doc, "textboxBackground", @".\graphics\textboxBackground.png"));
 
                 doc.AppendChild(root);
                 doc.Save(DEFAULT_XML_PATH);
