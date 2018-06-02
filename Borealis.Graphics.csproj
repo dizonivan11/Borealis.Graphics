@@ -46,6 +46,7 @@
     <Compile Include="GameObjects\Button.cs" />
     <Compile Include="GameObjects\Doodad.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\Textbox.cs" />
     <Compile Include="GameObjects\Window.cs" />
     <Compile Include="Input\MouseButtons.cs" />
     <Compile Include="Input\InputManager.cs" />
