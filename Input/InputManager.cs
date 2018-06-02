@@ -51,6 +51,7 @@ namespace Borealis.Graphics.Input
         internal void Apply() {
             if (PreviousSelected != null && PreviousSelected != Selected) {
                 PreviousSelected.OnLeave(this);
+                if (JustClicked(MouseButtons.Left) && PreviousSelected.Focused) PreviousSelected.Focused = false;
                 PreviousSelected = null;
             }
 

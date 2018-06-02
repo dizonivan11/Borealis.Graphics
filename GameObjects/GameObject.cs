@@ -40,6 +40,7 @@ namespace Borealis.Graphics.GameObjects {
         public SpriteFont Font { get; set; }
         public bool InputRaycasted { get; set; }
         public bool PreviousSelected { get; set; }
+        public bool Focused { get; internal set; }
 
         public Vector2 FinalPosition { get { if (Parent != null) return Parent.FinalPosition + Position; else return Position; } }
         public int Width { get { return Face.Bounds.Width; } }
@@ -84,6 +85,11 @@ namespace Borealis.Graphics.GameObjects {
             Font = DefaultFont;
             InputRaycasted = true;
             PreviousSelected = false;
+            Focused = false;
+
+            JustClick += delegate (GameObject sender, ClickEventArgs e) {
+                if (e.Button == MouseButtons.Left) Focused = true;
+            };
         }
 
         public void Add(GameObject item) {
@@ -118,6 +124,7 @@ namespace Borealis.Graphics.GameObjects {
             } else if (PreviousSelected) {
                 PreviousSelected = false;
                 OnLeave(input);
+                if (input.JustClicked(MouseButtons.Left) && Focused) Focused = false;
             }
         }
 
