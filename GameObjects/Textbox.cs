@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Text;
 
 namespace Borealis.Graphics.GameObjects {
     public class Textbox : GameObject {
         public string Text { get; set; }
+        public char PasswordCharacter { get; set; }
         public int Padding { get; set; }
         public Texture2D Background { get; set; }
         public DrawMode BackgroundMode { get; set; }
@@ -14,6 +16,7 @@ namespace Borealis.Graphics.GameObjects {
 
         public Textbox(int width) : base(width, DefaultFont.LineSpacing + 16) {
             Text = string.Empty;
+            PasswordCharacter = '\0';
             Padding = 8;
             Background = Style.Textures["textboxBackground"];
 
@@ -45,7 +48,11 @@ namespace Borealis.Graphics.GameObjects {
         }
 
         public override void Invalidate() {
-            Vector2 textSize = Font.MeasureString(Text);
+            StringBuilder finalText = new StringBuilder();
+            if (PasswordCharacter == '\0') finalText.Append(Text);
+            else for (int i = 0; i < Text.Length; i++) finalText.Append(PasswordCharacter);
+
+            Vector2 textSize = Font.MeasureString(finalText);
             SpriteBatch spriteBatch = Begin(Face);
 
             spriteBatch.Draw(
@@ -54,7 +61,7 @@ namespace Borealis.Graphics.GameObjects {
                 BackgroundMode,
                 currentColor); // b
             spriteBatch.DrawString(
-                Font, Text, new Vector2(Padding, (Height / 2) - (textSize.Y / 2)), Style.Colors["textboxFore"]); // t
+                Font, finalText, new Vector2(Padding, (Height / 2) - (textSize.Y / 2)), Style.Colors["textboxFore"]); // t
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, Width - 1, 1), Style.Colors["textboxBorder"]); // ^-
             spriteBatch.Draw(Pixel, new Rectangle(0, 0, 1, Height - 1), Style.Colors["textboxBorder"]); // <|
             spriteBatch.Draw(Pixel, new Rectangle(0, Height - 1, Width - 1, 1), Style.Colors["textboxBorder"]); // v-
