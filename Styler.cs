@@ -36,6 +36,12 @@ namespace Borealis.Graphics
                 root.AppendChild(CreateColor(doc, "buttonFore", Color.Black));
                 root.AppendChild(CreateColor(doc, "buttonBorder", Color.Black));
 
+                root.AppendChild(CreateColor(doc, "textboxBase", Color.FromNonPremultiplied(235, 235, 235, 215)));
+                root.AppendChild(CreateColor(doc, "textboxBaseHover", Color.FromNonPremultiplied(245, 245, 245, 225)));
+                root.AppendChild(CreateColor(doc, "textboxBaseActive", Color.FromNonPremultiplied(255, 255, 255, 235)));
+                root.AppendChild(CreateColor(doc, "textboxFore", Color.Black));
+                root.AppendChild(CreateColor(doc, "textboxBorder", Color.Black));
+
                 root.AppendChild(LinkTexture(doc, "windowBackground", @".\graphics\windowBackground.png"));
                 root.AppendChild(LinkTexture(doc, "windowTitleBackground", @".\graphics\windowTitleBackground.png"));
 
