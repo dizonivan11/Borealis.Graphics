@@ -10,10 +10,8 @@ public delegate void UpdateEventHandler(GameTime gameTime, InputManager input);
 public delegate void GameEventHandler(Borealis.Graphics.GameObjects.GameObject sender, InputManager input);
 public delegate void ClickEventHandler(Borealis.Graphics.GameObjects.GameObject sender, ClickEventArgs e);
 
-namespace Borealis.Graphics.GameObjects
-{
-    public abstract class GameObject
-    {
+namespace Borealis.Graphics.GameObjects {
+    public abstract class GameObject {
         public static GraphicsDeviceManager Graphics;
         public static Texture2D Pixel;
         public static SpriteFont DefaultFont;
@@ -44,6 +42,8 @@ namespace Borealis.Graphics.GameObjects
         public bool PreviousSelected { get; set; }
 
         public Vector2 FinalPosition { get { if (Parent != null) return Parent.FinalPosition + Position; else return Position; } }
+        public int Width { get { return Face.Bounds.Width; } }
+        public int Height { get { return Face.Bounds.Height; } }
 
         // EVENTS
         public event UpdateEventHandler InputUpdating;
@@ -95,7 +95,7 @@ namespace Borealis.Graphics.GameObjects
             item.Parent = null;
             Objects.Remove(item);
         }
-        
+
         public abstract void Invalidate();
 
         public void UpdateInput(InputManager input) {
