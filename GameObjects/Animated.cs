@@ -38,7 +38,7 @@ namespace Borealis.Graphics.GameObjects {
             finalBounds.X = (int)Position.X;
             finalBounds.Y = (int)Position.Y;
             if (Animating) {
-                if (buffer < Duration) buffer += gameTime.ElapsedGameTime.Milliseconds; else buffer = 0;
+                if (buffer < Duration) buffer += gameTime.ElapsedGameTime.Milliseconds; else buffer -= Duration;
 
                 float frameDuration = Duration / Frames.Count;
                 for (int frame = 0; frame < Frames.Count; frame++) {
