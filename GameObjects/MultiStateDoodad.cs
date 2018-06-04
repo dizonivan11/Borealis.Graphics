@@ -5,16 +5,14 @@ using System.Collections.Generic;
 
 namespace Borealis.Graphics.GameObjects {
     public class MultiStateDoodad : GameObject {
-        public Dictionary<string, Texture2D> TextureStates { get; set; }
-        public string CurrentState { get; set; }
+        public StateCollection TextureStates { get; set; }
 
         private Rectangle finalBounds = new Rectangle();
 
-        public MultiStateDoodad(Dictionary<string, Texture2D> textureStates, int width = 1, int height = 1)
+        public MultiStateDoodad(StateCollection textureStates, int width = 1, int height = 1)
             : base(width, height) {
 
             TextureStates = textureStates;
-            CurrentState = "default";
             Invalidate();
         }
 
@@ -37,11 +35,7 @@ namespace Borealis.Graphics.GameObjects {
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
-            if (TextureStates.ContainsKey(CurrentState)) {
-                spriteBatch.Draw(TextureStates[CurrentState], finalBounds, Color.White);
-            } else {
-                spriteBatch.Draw(Pixel, finalBounds, Color.White);
-            }
+            spriteBatch.Draw(TextureStates.GetCurrentState(), finalBounds, Color.White);
         }
     }
 }
