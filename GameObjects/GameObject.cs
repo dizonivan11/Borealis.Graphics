@@ -46,6 +46,11 @@ namespace Borealis.Graphics.GameObjects {
         public int Width { get { return Face.Width; } }
         public int Height { get { return Face.Height; } }
 
+        public float Left { get { return Position.X; } }
+        public float Top { get { return Position.Y; } }
+        public float Right { get { return Position.X + Face.Width; } }
+        public float Bottom { get { return Position.Y + Face.Height; } }
+
         // EVENTS
         public event UpdateEventHandler InputUpdating;
         internal virtual void OnInputUpdating(GameTime gameTime, InputManager input) { InputUpdating?.Invoke(gameTime, input); }
