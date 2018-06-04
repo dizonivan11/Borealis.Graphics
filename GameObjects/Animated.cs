@@ -15,6 +15,7 @@ namespace Borealis.Graphics.GameObjects {
 
         public Animated(List<Texture2D> frames, bool animating = false, float duration = 1000f, int width = 1, int height = 1)
             : base(width, height) {
+
             Frames = frames;
             CurrentFrame = 0;
             Animating = animating;
@@ -26,17 +27,18 @@ namespace Borealis.Graphics.GameObjects {
         public override void Invalidate() {
             int maxWidth = Width, maxHeight = Height;
             for (int i = 0; i < Frames.Count; i++) {
-                if (Width != 1 && maxWidth < Frames[i].Width) maxWidth = Frames[i].Width;
-                if (Height != 1 && maxHeight < Frames[i].Height) maxHeight = Frames[i].Height;
+                if (Width == 1 && maxWidth < Frames[i].Width) maxWidth = Frames[i].Width;
+                if (Height == 1 && maxHeight < Frames[i].Height) maxHeight = Frames[i].Height;
             }
             Face = new RenderTarget2D(Graphics.GraphicsDevice, maxWidth, maxHeight);
-            finalBounds.Width = Face.Width;
-            finalBounds.Height = Face.Height;
+            finalBounds.Width = maxWidth;
+            finalBounds.Height = maxHeight;
         }
 
         internal override void OnInputUpdated(GameTime gameTime, InputManager input) {
-            finalBounds.X = (int)Position.X;
-            finalBounds.Y = (int)Position.Y;
+            Vector2 finalPos = FinalPosition;
+            finalBounds.X = (int)finalPos.X;
+            finalBounds.Y = (int)finalPos.Y;
             if (Animating) {
                 if (buffer < Duration) buffer += gameTime.ElapsedGameTime.Milliseconds; else buffer -= Duration;
 
