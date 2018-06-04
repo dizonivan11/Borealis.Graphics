@@ -43,6 +43,7 @@
     <Compile Include="DrawMode.cs" />
     <Compile Include="EventArguments\ClickEventArgs.cs" />
     <Compile Include="GameObjects\Animated.cs" />
+    <Compile Include="GameObjects\MultiStateDoodad.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="GameForm.cs" />
     <Compile Include="GameObjects\Button.cs" />
