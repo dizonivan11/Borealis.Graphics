@@ -43,8 +43,8 @@ namespace Borealis.Graphics.GameObjects {
         public bool Focused(InputManager input) { return input.Focused == this; }
 
         public Vector2 FinalPosition { get { if (Parent != null) return Parent.FinalPosition + Position; else return Position; } }
-        public int Width { get { return Face.Bounds.Width; } }
-        public int Height { get { return Face.Bounds.Height; } }
+        public int Width { get { return Face.Width; } }
+        public int Height { get { return Face.Height; } }
 
         // EVENTS
         public event UpdateEventHandler InputUpdating;
