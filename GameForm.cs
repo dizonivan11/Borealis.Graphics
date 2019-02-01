@@ -25,6 +25,7 @@ namespace Borealis.Graphics
         }
 
         public void ChangeScene(Scene nextScene) {
+            CurrentScene.UnloadContent(Content);
             nextScene?.Initialize(this);
             nextScene?.LoadContent(Content);
             CurrentScene = nextScene;
